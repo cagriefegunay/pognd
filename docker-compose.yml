@@ -1,12 +1,20 @@
-version: "3.6"
+version: "3.8"
 
 services:
- web:
-    build:
-     context: .
-     dockerfile: Dockerfile
-    command: ./manage.py runserver 0.0.0.0:8000
+  app:
+    build: .
+    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && ./manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./:/code
     ports:
-      - "80:8000"
+      - "8000:8000"
+    
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+volumes:
+  postgres_data:
