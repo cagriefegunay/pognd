@@ -1,0 +1,6 @@
+./.dockerignore
+./static
+*.md
+.venv
+.git
+.gitignore
