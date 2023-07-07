@@ -4,12 +4,13 @@ services:
   app:
     build: .
 #    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && ./manage.py runserver 0.0.0.0:8000"
-    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && python manage.py collectstatic && gunicorn PyEditorial.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && python manage.py collectstatic --no-input && gunicorn PyEditorial.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./:/code
     ports:
       - "8000:8000"
-    
+    depends_on:
+      - db
   db:
     image: postgres:15
     volumes:
