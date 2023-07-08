@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
 
-# POSTGRES_HOST_AUTH_METHOD is not recommended for production. Pleas use for only development.
   db:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+# POSTGRES_HOST_AUTH_METHOD is not recommended for production due to security issues. Pleas use only for development.
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     healthcheck:

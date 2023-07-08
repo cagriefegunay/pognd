@@ -15,8 +15,11 @@
 # CHANNEL=stable sh get-docker.sh
 # rm get-docker.sh
 
+# create certificate
+
+# Start with docker compose
 
 
 # grant user to use docker with root privileges if needed
 # docker-rootless-setuptool.sh
-# docker compose up -d --build
+# docker compose up -d
