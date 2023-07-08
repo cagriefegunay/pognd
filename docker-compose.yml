@@ -13,17 +13,23 @@ services:
       interval: 30s
       timeout: 30s
       retries: 5
+    ports:
+      - "5432:5432"
+    restart: always
   
   app:
     build: .
 #    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && ./manage.py runserver 0.0.0.0:8000"
     command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py migrate --run-syncdb && python manage.py collectstatic --no-input && gunicorn PyEditorial.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - app_static:/code
+      - app_code:/code
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db: 
+        condition: service_healthy 
+    restart: always
+
 volumes:
   postgres_data:
-  app_static:
+  app_code:
