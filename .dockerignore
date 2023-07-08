@@ -4,3 +4,7 @@
 .venv
 .git
 .gitignore
+.gitattributes
+LICENSE
+./docker-compose.yml
+./nginx/Dockerfile
