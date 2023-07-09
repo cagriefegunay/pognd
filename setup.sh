@@ -1,26 +1,47 @@
 #!/bin/bash
 
-# TODO
+# Check that OS is based on Ubuntu 22.04
+# If it is true, then install dependencies.
+OS=$(lsb_release -a | grep -o "jammy")
 
-# if os-release = Ubuntu 22.04, then run script, else break and print "Are you sure that you are using Ubuntu 22.04?"
-# cat /etc/os-release ==> (ID or ID_LIKE is ubuntu) and (VERSION_ID is 22.04)
+check_os_and_install () {
+    if [ "$OS" == "jammy" ]; then
+        echo "This OS is based on Ubuntu 22.04 Jammy Jellyfish" && \
+            sudo apt update && \
+            sudo apt install -y \
+                git curl uidmap gnupg openssl && \
+            curl -fsSL get.docker.com -o get-docker.sh && \
+            CHANNEL=stable bash get-docker.sh && \
+            rm get-docker.sh
+    else
+        echo "This OS is not based on Ubuntu 22.04 Jammy Jellyfish. This script is only tested on it." 
+        return 1
+    fi
+}
 
-# update and upgrade the system without any output or tty window
+# Just clones the project.
+clone_project () {
+    git clone https://github.com/cagriefegunay/pognd 
+}
 
-# Check the required packages if they are installed. If not, install.
-# git curl uidmap -y
+# Create self-signed certifications for SSL/TLS connection.
+create_certs () {
+    openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout ./pognd/nginx/key.pem -out ./pognd/nginx/cert.pem -days 365
+}
 
-# download and install docker with get-docker.sh script
-# curl -fsSL get.docker.com -o get-docker.sh
-# CHANNEL=stable sh get-docker.sh
-# rm get-docker.sh
+# Add allowed hosts in settings.py to connect with IP or localhost
+allowed_hosts () {
+    echo -n "ALLOWED_HOSTS = [\"127.0.0.1\", \"0.0.0.0\",\"localhost\", \"django\", \"$(curl -s ifconfig.io)\"]" >> ./pognd/PyEditorial/settings.py
+}
 
-# create certificate
-# openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365
+# Create and start containers
+docker_up () {
+    cd ./pognd && sudo docker compose up -d
+}
 
-# Start with docker compose
-
-
-# grant user to use docker with root privileges if needed
-# docker-rootless-setuptool.sh
-# docker compose up -d
+# Run functions
+check_os_and_install && \
+    clone_project && \
+    create_certs && \
+    allowed_hosts && \
+    docker_up
