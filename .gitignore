@@ -154,3 +154,6 @@ db.sqlite3
 # Certs
 cert.pem
 key.pem
+
+# Docker Installation Script
+get-docker.sh
