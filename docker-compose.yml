@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   db:
-    image: ubuntu/postgres:14-22.04_beta
+    build: ./postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
