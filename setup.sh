@@ -24,11 +24,6 @@ clone_project () {
     git clone https://github.com/cagriefegunay/pognd 
 }
 
-# Create self-signed certifications for SSL/TLS connection.
-create_certs () {
-    openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout ./pognd/nginx/key.pem -out ./pognd/nginx/cert.pem -days 365
-}
-
 # Add allowed hosts in settings.py to connect with IP or localhost
 allowed_hosts () {
     echo -n "ALLOWED_HOSTS = [\"127.0.0.1\", \"0.0.0.0\",\"localhost\", \"django\", \"$(curl -s ifconfig.io)\"]" >> ./pognd/PyEditorial/settings.py
@@ -42,6 +37,5 @@ docker_up () {
 # Run functions
 check_os_and_install && \
     clone_project && \
-    create_certs && \
     allowed_hosts && \
     docker_up
