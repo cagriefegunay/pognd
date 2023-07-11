@@ -1,8 +1,8 @@
 # Base image
 FROM ubuntu:22.04
 
-RUN apt update && \
-    apt install -y nginx openssl
+RUN DEBIAN_FRONTEND=noninteractive apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y nginx openssl
 
 # Copy configs
 WORKDIR /etc/nginx/conf.d
