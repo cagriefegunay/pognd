@@ -7,5 +7,7 @@
 .gitattributes
 LICENSE
 ./docker-compose.yml
-./Dockerfile
+Dockerfile
 ./nginx/Dockerfile
+diagram.drawio
+diagram.png
