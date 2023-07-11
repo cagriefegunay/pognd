@@ -1,7 +1,9 @@
 # Base image
 FROM ubuntu:22.04
 
+# Env variable for auto approves and not meeting input screens 
 ENV DEBIAN_FRONTEND=noninteractive
+
 # Update the package lists and install PostgreSQL
 RUN apt update && apt install -y postgresql postgresql-contrib
 
